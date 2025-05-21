@@ -75,6 +75,9 @@ class SparkTTS:
             [f"<|bicodec_global_{i}|>" for i in global_token_ids.squeeze()]
         )
 
+        print(f"[DEBUG] semantic_tokens shape: {semantic_token_ids.shape}")
+        print(f"[DEBUG] global_tokens shape: {global_token_ids.shape}")
+
         # Prepare the input tokens for the model
         if prompt_text is not None:
             semantic_tokens = "".join(
@@ -209,8 +212,17 @@ class SparkTTS:
             for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
         ]
 
+        print("Raw generated token IDs:", generated_ids)
+
         # Decode the generated tokens into text
         predicts = self.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
+        print("Decoded generated text:", predicts)
+
+        match = re.findall(r"bicodec_semantic_(\d+)", predicts)
+        if not match:
+            print("⚠️ No semantic tokens found. Skipping audio generation.")
+            return
 
         # Extract semantic token IDs from the generated text
         pred_semantic_ids = (
@@ -219,6 +231,8 @@ class SparkTTS:
             .unsqueeze(0)
         )
 
+        
+
         if gender is not None:
             global_token_ids = (
                 torch.tensor([int(token) for token in re.findall(r"bicodec_global_(\d+)", predicts)])
@@ -226,6 +240,10 @@ class SparkTTS:
                 .unsqueeze(0)
                 .unsqueeze(0)
             )
+
+        print("semantic_tokens shape:", pred_semantic_ids.shape)
+        print("global_tokens shape:", global_token_ids.shape if global_token_ids is not None else None)
+
 
         # Convert semantic tokens back to waveform
         wav = self.audio_tokenizer.detokenize(
