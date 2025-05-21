@@ -83,9 +83,18 @@ if __name__ == "__main__":
                 sometimes feel overwhelming, but I’m here to make things easier and clearer for you, every step of the 
                 way. """
     ref_speech="ref/voice-message1-clara-intro.wav"
+
+    makima_text="""I have only one intention, to save as many people as possible from devils.
+                   If division four succeeds tomorrow, we can inform the public. The news media will make you national heroes.
+                   Working in the open, you would be able to fight more effectively, and better protect our country from devils."""
+    makima_text="ref/makima_voice.wav"
+
+
     prompt="Hi, how are you doing?"
 
     audio, sr = sf.read(ref_speech)
     print(f"Loaded reference audio: shape={audio.shape}, sample_rate={sr}")
-    run_tts(text=prompt, model=spark_base,prompt_text=ref_text,prompt_speech=ref_speech,gender='female',pitch='moderate',speed='moderate')
+
+    run_tts(text=prompt, model=spark_base,prompt_text=ref_text,prompt_speech=ref_speech,pitch='moderate',speed='moderate')
+    run_tts(text=prompt, model=spark_base,prompt_text=makima_text,prompt_speech=makima_text,pitch='moderate',speed='moderate')
 
