@@ -219,10 +219,7 @@ class SparkTTS:
 
         print("Decoded generated text:", predicts)
 
-        match = re.findall(r"bicodec_semantic_(\d+)", predicts)
-        if not match:
-            print("⚠️ No semantic tokens found. Skipping audio generation.")
-            return
+        
 
         # Extract semantic token IDs from the generated text
         pred_semantic_ids = (
@@ -244,6 +241,11 @@ class SparkTTS:
         print("semantic_tokens shape:", pred_semantic_ids.shape)
         print("global_tokens shape:", global_token_ids.shape if global_token_ids is not None else None)
 
+
+        match = re.findall(r"bicodec_semantic_(\d+)", predicts)
+        if not match:
+            print("⚠️ No semantic tokens found. Skipping audio generation.")
+            return
 
         # Convert semantic tokens back to waveform
         wav = self.audio_tokenizer.detokenize(

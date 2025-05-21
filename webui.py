@@ -87,5 +87,5 @@ if __name__ == "__main__":
 
     audio, sr = sf.read(ref_speech)
     print(f"Loaded reference audio: shape={audio.shape}, sample_rate={sr}")
-    run_tts(text=prompt, model=spark_base,prompt_text=ref_text,prompt_speech=ref_speech)
+    run_tts(text=prompt, model=spark_base,prompt_text=ref_text,prompt_speech=ref_speech,gender='female',pitch='moderate',speed='moderate')
 
