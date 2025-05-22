@@ -94,6 +94,7 @@ class SparkTTS:
                 "<|end_global_token|>",
                 "<|start_semantic_token|>",
                 semantic_tokens,
+                "<|end_semantic_token|>"
             ]
         else:
             inputs = [

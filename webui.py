@@ -90,11 +90,15 @@ if __name__ == "__main__":
     makima_text="ref/makima_voice.wav"
 
 
-    prompt="Hi, how are you doing?"
+    prompts = [
+    "Whoa! That was unexpected!",
+    "Good morning, sunshine. Did you sleep well?",
+    "Please proceed to the next terminal, and don’t forget to carry your ID badge at all times.",
+    "Ugh, not again. Why does this always happen when I'm in a hurry?", 
+    "In the stillness of the night, a soft breeze whispered through the trees, carrying secrets only the moon could understand."
+    ]
 
-    audio, sr = sf.read(ref_speech)
-    print(f"Loaded reference audio: shape={audio.shape}, sample_rate={sr}")
-
-    run_tts(text=prompt, model=spark_base,prompt_text=ref_text,prompt_speech=ref_speech,pitch='moderate',speed='moderate')
-    run_tts(text=prompt, model=spark_base,prompt_text=makima_text,prompt_speech=makima_text,pitch='moderate',speed='moderate')
+    for prompt in prompts:
+        run_tts(text=prompt, model=spark_base,prompt_text=ref_text,prompt_speech=ref_speech)
+        run_tts(text=prompt, model=spark_base,prompt_text=ref_speech,prompt_speech=makima_text)
 
